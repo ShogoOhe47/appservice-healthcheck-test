@@ -27,6 +27,7 @@ namespace healthcheck.Controllers
         {
             // instance name check
             string COMPUTERNAME = Environment.GetEnvironmentVariable("COMPUTERNAME");
+            string RoleInstanceId = Environment.GetEnvironmentVariable("RoleInstanceId");
 
             // read instance name from list file and compare
             //List<String> instanceList = new List<string>();
@@ -40,7 +41,11 @@ namespace healthcheck.Controllers
                 {
                     _logger.LogInformation(line.TrimEnd());
                     //instanceList.Add();
-                    if (line.TrimEnd().Equals(COMPUTERNAME)  )
+                    if (line.TrimEnd().Equals(COMPUTERNAME, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return BadRequest();
+                    }
+                    if (line.TrimEnd().Equals(RoleInstanceId, StringComparison.OrdinalIgnoreCase))
                     {
                         return BadRequest();
                     }
